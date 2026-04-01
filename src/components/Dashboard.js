@@ -8,7 +8,7 @@ function Dashboard() {
 
   useEffect(() => {
     axios
-      .get("https://YOUR_API_URL/get-insights?id=retail-summary")
+      .get("https://ph4jwluqme.execute-api.ap-south-1.amazonaws.com/get-insights?id=retail-summary")
       .then((res) => setData(res.data));
   }, []);
 
