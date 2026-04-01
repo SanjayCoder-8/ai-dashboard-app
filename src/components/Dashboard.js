@@ -15,12 +15,10 @@ function Dashboard() {
 
   if (!data) return <p>Loading...</p>;
 
-  // 🔹 Extract data
   const yearlySales = data.yearly_sales;
   const topProducts = data.top_products;
   const countrySales = data.country_sales;
 
-  // 🔹 Yearly Revenue Chart
   const yearlyChart = {
     labels: Object.keys(yearlySales),
     datasets: [
@@ -34,24 +32,22 @@ function Dashboard() {
     ],
   };
 
-  // 🔹 Top Products Chart
   const productChart = {
     labels: Object.keys(topProducts),
     datasets: [
       {
-        label: "Top Products Revenue",
+        label: "Top Products",
         data: Object.values(topProducts),
         backgroundColor: "#22c55e",
       },
     ],
   };
 
-  // 🔹 Country Sales Chart
   const countryChart = {
     labels: Object.keys(countrySales),
     datasets: [
       {
-        label: "Country Revenue",
+        label: "Country Sales",
         data: Object.values(countrySales),
         backgroundColor: "#f59e0b",
       },
@@ -60,27 +56,36 @@ function Dashboard() {
 
   return (
     <div className="space-y-6">
+
       {/* 🔹 Revenue Card */}
-      <div className="bg-gray-800 p-5 rounded-2xl shadow-lg">
-        <h2 className="text-2xl mb-4">📊 Dashboard</h2>
-
-        <h3 className="text-xl mb-4 text-green-400">
+      <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
+        <h2 className="text-2xl mb-2">📊 Dashboard</h2>
+        <p className="text-green-400 text-lg">
           💰 Total Revenue: {data.total_revenue}
-        </h3>
-
-        <Line data={yearlyChart} />
+        </p>
       </div>
 
-      {/* 🔹 Top Products */}
-      <div className="bg-gray-800 p-5 rounded-2xl shadow-lg">
-        <h2 className="text-xl mb-3">🏆 Top Products</h2>
-        <Bar data={productChart} />
-      </div>
+      {/* 🔹 GRID LAYOUT */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      {/* 🔹 Country Sales */}
-      <div className="bg-gray-800 p-5 rounded-2xl shadow-lg">
-        <h2 className="text-xl mb-3">🌍 Country Sales</h2>
-        <Bar data={countryChart} />
+        {/* Yearly Chart */}
+        <div className="bg-gray-800 p-5 rounded-2xl shadow-lg">
+          <h3 className="text-lg mb-3">📈 Yearly Revenue</h3>
+          <Line data={yearlyChart} />
+        </div>
+
+        {/* Top Products */}
+        <div className="bg-gray-800 p-5 rounded-2xl shadow-lg">
+          <h3 className="text-lg mb-3">🏆 Top Products</h3>
+          <Bar data={productChart} />
+        </div>
+
+        {/* Country Sales */}
+        <div className="bg-gray-800 p-5 rounded-2xl shadow-lg md:col-span-2">
+          <h3 className="text-lg mb-3">🌍 Country Sales</h3>
+          <Bar data={countryChart} />
+        </div>
+
       </div>
     </div>
   );
