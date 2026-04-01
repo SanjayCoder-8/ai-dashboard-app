@@ -14,7 +14,7 @@ function Dashboard() {
 
   if (!data) return <p>Loading...</p>;
 
-  const yearlySales = JSON.parse(data.yearly_sales);
+  const yearlySales = data.yearly_sales;
 
   const chartData = {
     labels: Object.keys(yearlySales),
