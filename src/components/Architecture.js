@@ -16,7 +16,34 @@ const nodes = [
 function Architecture() {
   const [selected, setSelected] = useState(null);
 
-  const speak = (text) => {
+  // 🔊 FULL ARCHITECTURE VOICE
+  const speakFull = () => {
+    const speech = new SpeechSynthesisUtterance(`
+    This system follows an end-to-end data pipeline architecture for retail analytics and AI-driven insights.
+
+    Data is stored in Amazon S3 as raw retail transactions.
+
+    AWS Glue performs ETL operations to clean and transform the data into optimized formats.
+
+    AWS Lambda computes key business metrics like revenue, trends, and product performance.
+
+    Amazon Bedrock generates AI-driven business insights using large language models.
+
+    The results are stored in DynamoDB for fast and scalable access.
+
+    API Gateway securely exposes the data through REST APIs.
+
+    Finally, a React dashboard visualizes the data and insights for users.
+
+    This architecture is fully serverless, scalable, and aligned with modern data engineering and MLOps practices.
+    `);
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(speech);
+  };
+
+  // 🔊 NODE VOICE
+  const speakNode = (text) => {
     const speech = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
@@ -30,19 +57,17 @@ function Architecture() {
         ⚙️ System Design
       </h2>
 
-      {/* VOICE */}
+      {/* VOICE BUTTON */}
       <div className="flex justify-center mb-6">
         <button
-          onClick={() =>
-            speak("S3 to Glue to Lambda to Bedrock to DynamoDB to API to React")
-          }
+          onClick={speakFull}
           className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           🔊 Explain
         </button>
       </div>
 
-      {/* 🔥 STABLE ZOOM WRAPPER */}
+      {/* 🔥 STABLE ZOOM */}
       <TransformWrapper
         initialScale={1}
         minScale={0.8}
@@ -54,7 +79,7 @@ function Architecture() {
       >
         <TransformComponent>
 
-          {/* 🔥 FIXED CANVAS (IMPORTANT) */}
+          {/* FIXED CANVAS */}
           <div className="w-[1200px] mx-auto">
 
             <div className="flex items-center justify-between py-10">
@@ -70,7 +95,7 @@ function Architecture() {
                     whileHover={{ scale: 1.08 }}
                     onClick={() => {
                       setSelected(node);
-                      speak(node.desc);
+                      speakNode(node.desc);
                     }}
                     className="cursor-pointer"
                   >
@@ -109,7 +134,7 @@ function Architecture() {
         </TransformComponent>
       </TransformWrapper>
 
-      {/* 🔥 DETAIL PANEL */}
+      {/* DETAIL PANEL */}
       {selected && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
