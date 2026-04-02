@@ -15,7 +15,7 @@ function Dashboard() {
     }
   }
 )
-.then((res) => console.log(res.data))
+.then((res) => setData(res.data))
 .catch((err) => console.error(err));
   }, []);
 
