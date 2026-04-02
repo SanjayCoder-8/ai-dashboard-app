@@ -9,17 +9,33 @@ function App() {
   return (
     <div className="flex min-h-screen bg-gray-950 text-white">
 
-      {/* 🔹 SIDEBAR */}
+      {/* 🔥 MOBILE SIDEBAR */}
+      <div className={`fixed top-0 left-0 h-full w-64 bg-gray-900 p-6 z-50 transform transition-transform duration-300 
+        ${open ? "translate-x-0" : "-translate-x-full"} md:hidden`}>
+
+        <h2 className="text-2xl font-bold mb-10 text-blue-400">
+          AI Analytics
+        </h2>
+
+        <nav className="space-y-4">
+          <p>Dashboard</p>
+          <p>Insights</p>
+          <p>Architecture</p>
+          <p>Explanation</p>
+        </nav>
+      </div>
+
+      {/* 🔹 DESKTOP SIDEBAR */}
       <div className="w-64 bg-gray-900 p-6 shadow-lg hidden md:block">
         <h2 className="text-2xl font-bold mb-10 text-blue-400">
           AI Analytics
         </h2>
 
         <nav className="space-y-4">
-          <p className="text-gray-400 hover:text-white cursor-pointer">Dashboard</p>
-          <p className="text-gray-400 hover:text-white cursor-pointer">Insights</p>
-          <p className="text-gray-400 hover:text-white cursor-pointer">Architecture</p>
-          <p className="text-gray-400 hover:text-white cursor-pointer">Explanation</p>
+          <p>Dashboard</p>
+          <p>Insights</p>
+          <p>Architecture</p>
+          <p>Explanation</p>
         </nav>
       </div>
 
@@ -27,79 +43,52 @@ function App() {
       <div className="flex-1">
 
         {/* 🔥 HEADER */}
-        <div className="bg-gray-900 px-6 py-4 border-b border-gray-800 flex justify-between items-center">
-          <h1 className="text-2xl font-semibold">
+        <div className="bg-gray-900 px-4 md:px-6 py-4 border-b border-gray-800 flex justify-between items-center">
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            className="md:hidden text-xl"
+            onClick={() => setOpen(!open)}
+          >
+            ☰
+          </button>
+
+          <h1 className="text-lg md:text-2xl font-semibold text-center flex-1">
             AI Retail Insights Platform
           </h1>
-          <span className="text-sm text-gray-400">
+
+          <span className="hidden md:block text-sm text-gray-400">
             AWS + AI Pipeline
           </span>
         </div>
 
-        {/* 🔹 PAGE CONTENT */}
-        <div className="p-6 space-y-10 max-w-7xl mx-auto">
+        {/* 🔹 CONTENT */}
+        <div className="p-4 md:p-6 space-y-8 md:space-y-10 max-w-7xl mx-auto">
 
-          {/* DASHBOARD */}
           <Dashboard />
-
-          {/* INSIGHTS */}
           <Insights />
-
-          {/* ARCHITECTURE */}
           <Architecture />
 
-          {/* 🔥 ACCORDION EXPLANATION */}
+          {/* ACCORDION */}
           <div className="bg-gray-900 rounded-2xl border border-gray-800 shadow-lg overflow-hidden">
 
-            {/* HEADER */}
             <div
               onClick={() => setOpen(!open)}
-              className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-800 transition"
+              className="flex justify-between items-center p-4 md:p-6 cursor-pointer hover:bg-gray-800"
             >
-              <h2 className="text-2xl font-semibold text-blue-400">
+              <h2 className="text-lg md:text-2xl font-semibold text-blue-400">
                 📘 System Architecture Explanation
               </h2>
-
-              <span className="text-gray-400 text-xl">
-                {open ? "−" : "+"}
-              </span>
+              <span>{open ? "−" : "+"}</span>
             </div>
 
-            {/* CONTENT */}
             {open && (
-              <div className="px-6 pb-6 border-t border-gray-800">
+              <div className="px-4 md:px-6 pb-6 border-t border-gray-800">
                 <p className="text-gray-300 text-sm leading-relaxed mt-4">
-
-                  This system follows an end-to-end data pipeline architecture for retail analytics and AI-driven insights.
-                  <br /><br />
-
-                  The pipeline begins with Amazon S3, where raw retail transaction data is stored in CSV format. This acts as the data lake layer.
-                  <br /><br />
-
-                  AWS Glue is used to perform ETL operations. It cleans, transforms, and converts the raw data into optimized formats like Parquet, making it suitable for analytics.
-                  <br /><br />
-
-                  AWS Lambda functions then process this transformed data to compute key business metrics such as total revenue, yearly sales trends, top-performing products, and country-wise performance.
-                  <br /><br />
-
-                  These aggregated insights are passed to Amazon Bedrock, where a large language model generates detailed AI-driven business insights and recommendations.
-                  <br /><br />
-
-                  The final structured results, including both computed metrics and AI-generated summaries, are stored in DynamoDB for fast and scalable access.
-                  <br /><br />
-
-                  Amazon API Gateway exposes this data securely through REST APIs, enabling external access with proper authorization.
-                  <br /><br />
-
-                  Finally, a React-based frontend dashboard consumes these APIs to visualize the data, display insights, and provide an interactive user experience.
-                  <br /><br />
-
-                  This architecture is scalable, serverless, and follows modern data engineering and MLOps practices.
-
+                  This system follows an end-to-end data pipeline architecture for retail analytics and AI-driven insights...
                 </p>
               </div>
             )}
-
           </div>
 
         </div>
