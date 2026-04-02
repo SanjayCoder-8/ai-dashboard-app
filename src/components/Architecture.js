@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { motion } from "framer-motion";
 
@@ -15,6 +15,16 @@ const nodes = [
 
 function Architecture() {
   const [selected, setSelected] = useState(null);
+
+  // 🔥 ACTIVE STEP (simulation)
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % nodes.length);
+    }, 1500);
+    return () => clearInterval(interval);
+  }, []);
 
   // 🔊 FULL ARCHITECTURE VOICE
   const speakFull = () => {
@@ -34,15 +44,12 @@ function Architecture() {
     API Gateway securely exposes the data through REST APIs.
 
     Finally, a React dashboard visualizes the data and insights for users.
-
-    This architecture is fully serverless, scalable, and aligned with modern data engineering and MLOps practices.
     `);
 
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
   };
 
-  // 🔊 NODE VOICE
   const speakNode = (text) => {
     const speech = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.cancel();
@@ -52,12 +59,10 @@ function Architecture() {
   return (
     <div className="bg-black p-6 rounded-2xl border border-gray-800 overflow-hidden">
 
-      {/* TITLE */}
       <h2 className="text-2xl text-center mb-6 font-semibold">
         ⚙️ System Design
       </h2>
 
-      {/* VOICE BUTTON */}
       <div className="flex justify-center mb-6">
         <button
           onClick={speakFull}
@@ -67,7 +72,6 @@ function Architecture() {
         </button>
       </div>
 
-      {/* 🔥 STABLE ZOOM */}
       <TransformWrapper
         initialScale={1}
         minScale={0.8}
@@ -79,7 +83,6 @@ function Architecture() {
       >
         <TransformComponent>
 
-          {/* FIXED CANVAS */}
           <div className="w-[1200px] mx-auto">
 
             <div className="flex items-center justify-between py-10">
@@ -99,9 +102,11 @@ function Architecture() {
                     }}
                     className="cursor-pointer"
                   >
-                    <div className="bg-gray-900 px-5 py-6 rounded-2xl border border-gray-700 shadow-lg text-center w-28 hover:shadow-blue-500/30 transition">
+                    <div
+                      className={`bg-gray-900 px-5 py-6 rounded-2xl border border-gray-700 shadow-lg text-center w-28 transition
+                      ${activeStep === index ? "ring-2 ring-blue-500 shadow-blue-500/40" : ""}`}
+                    >
 
-                      {/* ICON */}
                       <div className={`w-12 h-12 mx-auto mb-2 flex items-center justify-center rounded-xl ${node.color}`}>
                         {node.name === "Lambda"
                           ? "λ"
@@ -114,14 +119,25 @@ function Architecture() {
                     </div>
                   </motion.div>
 
-                  {/* CONNECTOR */}
+                  {/* CONNECTOR WITH FLOW */}
                   {index !== nodes.length - 1 && (
-                    <motion.div
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: 1 }}
-                      transition={{ delay: index * 0.2 }}
-                      className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded"
-                    />
+                    <div className="relative w-16 h-1 bg-gray-700 rounded overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-40"></div>
+
+                      {/* moving arrow */}
+                      <motion.div
+                        initial={{ x: -30 }}
+                        animate={{ x: 80 }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 1.5,
+                          ease: "linear"
+                        }}
+                        className="absolute top-1/2 -translate-y-1/2 text-blue-400 text-xs"
+                      >
+                        ➤
+                      </motion.div>
+                    </div>
                   )}
 
                 </React.Fragment>
