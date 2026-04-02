@@ -7,22 +7,21 @@ function Insights() {
 
   useEffect(() => {
     axios.get(
-  "https://ph4jwluqme.execute-api.ap-south-1.amazonaws.com/get-insights?id=retail-summary",
-  {
-    headers: {
-      Authorization: "Bearer my-secret-token"
-    }
-  }
-)
-.then((res) => setSummary(res.data.ai_summary))
-.catch((err) => console.error(err));
+      "https://ph4jwluqme.execute-api.ap-south-1.amazonaws.com/get-insights?id=retail-summary",
+      {
+        headers: {
+          Authorization: "Bearer my-secret-token"
+        }
+      }
+    )
+    .then((res) => setSummary(res.data.ai_summary))
+    .catch((err) => console.error(err));
   }, []);
 
   return (
-    <div className="bg-gray-800 p-5 rounded-2xl shadow-lg">
-      <h2 className="text-2xl mb-3">🤖 AI Insights</h2>
+    <div className="bg-gray-800 p-6 rounded-2xl shadow border border-gray-700">
+      <h2 className="text-xl mb-4">🤖 AI Insights</h2>
 
-      {/* 🔥 Markdown Rendering */}
       <div className="prose prose-invert max-w-none">
         <ReactMarkdown>{summary}</ReactMarkdown>
       </div>
