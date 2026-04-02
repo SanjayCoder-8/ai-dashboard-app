@@ -17,7 +17,7 @@ function Architecture() {
   const [selected, setSelected] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
 
-  // 🔥 STEP FLOW SIMULATION
+  // 🔥 STEP FLOW (only highlight, no animation)
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % nodes.length);
@@ -25,7 +25,7 @@ function Architecture() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔊 FULL VOICE
+  // 🔊 VOICE
   const speakFull = () => {
     const speech = new SpeechSynthesisUtterance(`
       This system follows an end-to-end data pipeline architecture.
@@ -77,12 +77,12 @@ function Architecture() {
               {nodes.map((node, index) => (
                 <React.Fragment key={node.id}>
 
-                  {/* 🔥 NODE */}
+                  {/* NODE */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.08 }}
+                    whileHover={{ scale: 1.05 }}
                     onClick={() => {
                       setSelected(node);
                       speakNode(node.desc);
@@ -91,10 +91,9 @@ function Architecture() {
                   >
                     <div
                       className={`bg-gray-900 px-5 py-6 rounded-2xl border border-gray-700 shadow-lg text-center w-28 transition
-                      ${activeStep === index ? "ring-4 ring-blue-400 shadow-[0_0_25px_#3b82f6] scale-105" : ""}`}
+                      ${activeStep === index ? "ring-2 ring-blue-400 shadow-blue-500/40" : ""}`}
                     >
 
-                      {/* ICON */}
                       <div className={`w-12 h-12 mx-auto mb-2 flex items-center justify-center rounded-xl ${node.color}`}>
                         {node.name === "Lambda"
                           ? "λ"
@@ -107,36 +106,9 @@ function Architecture() {
                     </div>
                   </motion.div>
 
-                  {/* 🔥 CONNECTOR (FIXED ANIMATION) */}
+                  {/* 🔥 CLEAN CONNECTOR (NO ANIMATION) */}
                   {index !== nodes.length - 1 && (
-                    <div className="relative w-24 h-8 bg-gray-700 rounded overflow-hidden">
-
-  {/* BASE LINE */}
-  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
-
-  {/* 🔥 FIXED ANIMATION */}
-  <motion.div
-    initial={{ x: -80 }}
-    animate={{ x: 200 }}
-    transition={{
-      repeat: Infinity,
-      duration: 2,
-      ease: "linear"
-    }}
-    style={{
-      position: "absolute",
-      top: "50%",
-      y: "-50%",
-      color: "#3b82f6",
-      fontSize: "24px",
-      fontWeight: "bold",
-      textShadow: "0 0 10px #3b82f6"
-    }}
-  >
-    ➤➤➤
-  </motion.div>
-
-</div>
+                    <div className="w-16 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded"></div>
                   )}
 
                 </React.Fragment>
@@ -149,7 +121,7 @@ function Architecture() {
         </TransformComponent>
       </TransformWrapper>
 
-      {/* 🔥 DETAIL PANEL */}
+      {/* DETAIL PANEL */}
       {selected && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
