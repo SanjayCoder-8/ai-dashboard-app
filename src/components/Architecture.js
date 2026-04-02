@@ -109,23 +109,30 @@ function Architecture() {
 
                   {/* 🔥 CONNECTOR (FIXED ANIMATION) */}
                   {index !== nodes.length - 1 && (
-                    <div className="relative w-20 h-6 bg-gray-700 rounded overflow-hidden">
+                    <div className="relative w-24 h-10 bg-gray-700 rounded overflow-hidden">
 
                       {/* BASE LINE */}
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
 
                       {/* 🔥 VISIBLE FLOW */}
                       <motion.div
-                        initial={{ x: -60 }}
-                        animate={{ x: 160 }}
+                        initial={{ x: -100 }}
+                        animate={{ x: 200 }}
                         transition={{
                           repeat: Infinity,
-                          duration: 1,
-                          ease: "linear"
+                          duration: 2,
+                          ease: "easeInOut"
                         }}
-                        className="absolute inset-y-0 flex items-center text-blue-400 text-xl font-bold drop-shadow-[0_0_10px_#3b82f6]"
-                      >
-                        ➤➤➤
+                        style={{
+                          position: "absolute",
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          color: "#3b82f6",
+                          fontSize: "28px",
+                          fontWeight: "bold"
+                        }}
+>
+                        ➤
                       </motion.div>
 
                     </div>
