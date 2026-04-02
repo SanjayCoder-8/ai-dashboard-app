@@ -6,10 +6,16 @@ function Insights() {
   const [summary, setSummary] = useState("");
 
   useEffect(() => {
-    axios
-      .get("https://ph4jwluqme.execute-api.ap-south-1.amazonaws.com/get-insights?id=retail-summary")
-      .then((res) => setSummary(res.data.ai_summary))
-      .catch((err) => console.error(err));
+    axios.get(
+  "https://ph4jwluqme.execute-api.ap-south-1.amazonaws.com/get-insights?id=retail-summary",
+  {
+    headers: {
+      Authorization: "Bearer my-secret-token"
+    }
+  }
+)
+.then((res) => console.log(res.data))
+.catch((err) => console.error(err));
   }, []);
 
   return (
