@@ -14,7 +14,7 @@ function Insights() {
     }
   }
 )
-.then((res) => setSummary(res.data))
+.then((res) => setSummary(res.data.ai_summary))
 .catch((err) => console.error(err));
   }, []);
 
