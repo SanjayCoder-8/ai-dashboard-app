@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { motion } from "framer-motion";
 
-// 🔥 CLEAN HORIZONTAL LAYOUT
+// 🔥 DATA
 const nodes = [
   { id: 1, name: "S3", color: "bg-orange-500", desc: "Stores raw data" },
   { id: 2, name: "Glue", color: "bg-blue-500", desc: "ETL processing" },
-  { id: 3, name: "Lambda", color: "bg-yellow-400 text-black", desc: "Aggregation" },
-  { id: 4, name: "Bedrock", color: "bg-green-500", desc: "AI insights" },
-  { id: 5, name: "DynamoDB", color: "bg-indigo-500", desc: "Stores results" },
-  { id: 6, name: "API", color: "bg-cyan-500", desc: "API Gateway" },
-  { id: 7, name: "React", color: "bg-sky-400 text-black", desc: "Frontend" }
+  { id: 3, name: "Lambda", color: "bg-yellow-400 text-black", desc: "Aggregation logic" },
+  { id: 4, name: "Bedrock", color: "bg-green-500", desc: "AI insights generation" },
+  { id: 5, name: "DynamoDB", color: "bg-indigo-500", desc: "Stores processed data" },
+  { id: 6, name: "API", color: "bg-cyan-500", desc: "API Gateway layer" },
+  { id: 7, name: "React", color: "bg-sky-400 text-black", desc: "Frontend dashboard" }
 ];
 
 function Architecture() {
@@ -23,14 +23,15 @@ function Architecture() {
   };
 
   return (
-    <div className="bg-black p-6 rounded-2xl border border-gray-800">
+    <div className="bg-black p-6 rounded-2xl border border-gray-800 overflow-hidden">
 
+      {/* TITLE */}
       <h2 className="text-2xl text-center mb-6 font-semibold">
         ⚙️ System Design
       </h2>
 
-      {/* 🔊 Voice */}
-      <div className="flex justify-center mb-4">
+      {/* VOICE */}
+      <div className="flex justify-center mb-6">
         <button
           onClick={() =>
             speak("S3 to Glue to Lambda to Bedrock to DynamoDB to API to React")
@@ -41,29 +42,32 @@ function Architecture() {
         </button>
       </div>
 
+      {/* 🔥 STABLE ZOOM WRAPPER */}
       <TransformWrapper
         initialScale={1}
-        minScale={0.7}
-        maxScale={2}
-        centerOnInit
+        minScale={0.8}
+        maxScale={1.5}
+        centerOnInit={true}
+        doubleClick={{ disabled: true }}
+        panning={{ velocityDisabled: true }}
         wheel={{ step: 0.1 }}
       >
         <TransformComponent>
 
-          <div className="w-full flex justify-center">
+          {/* 🔥 FIXED CANVAS (IMPORTANT) */}
+          <div className="w-[1200px] mx-auto">
 
-            {/* 🔥 MAIN FLOW */}
-            <div className="flex items-center gap-10 py-10">
+            <div className="flex items-center justify-between py-10">
 
               {nodes.map((node, index) => (
                 <React.Fragment key={node.id}>
 
                   {/* NODE */}
                   <motion.div
-                    whileHover={{ scale: 1.08 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
+                    whileHover={{ scale: 1.08 }}
                     onClick={() => {
                       setSelected(node);
                       speak(node.desc);
@@ -74,14 +78,18 @@ function Architecture() {
 
                       {/* ICON */}
                       <div className={`w-12 h-12 mx-auto mb-2 flex items-center justify-center rounded-xl ${node.color}`}>
-                        {node.name === "Lambda" ? "λ" : node.name === "Bedrock" ? "AI" : node.name.slice(0,2)}
+                        {node.name === "Lambda"
+                          ? "λ"
+                          : node.name === "Bedrock"
+                          ? "AI"
+                          : node.name.slice(0, 2)}
                       </div>
 
-                      <p className="text-sm">{node.name}</p>
+                      <p className="text-sm font-medium">{node.name}</p>
                     </div>
                   </motion.div>
 
-                  {/* 🔗 CONNECTOR */}
+                  {/* CONNECTOR */}
                   {index !== nodes.length - 1 && (
                     <motion.div
                       initial={{ scaleX: 0 }}
