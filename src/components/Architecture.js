@@ -1,14 +1,39 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const nodes = [
-  { id: 1, name: "S3", x: 50, y: 150, desc: "Stores raw CSV data in bucket" },
-  { id: 2, name: "Glue", x: 220, y: 80, desc: "Transforms CSV → Parquet" },
-  { id: 3, name: "Lambda", x: 400, y: 150, desc: "Aggregates revenue & metrics" },
-  { id: 4, name: "Bedrock", x: 580, y: 80, desc: "Generates AI insights (LLM)" },
-  { id: 5, name: "DynamoDB", x: 760, y: 150, desc: "Stores processed insights" },
-  { id: 6, name: "API", x: 920, y: 80, desc: "Secure API endpoint" },
-  { id: 7, name: "React", x: 1100, y: 150, desc: "Frontend dashboard UI" }
+const layers = [
+  {
+    title: "Data Layer",
+    nodes: [
+      { name: "S3", desc: "Stores raw retail CSV data" }
+    ]
+  },
+  {
+    title: "Processing Layer",
+    nodes: [
+      { name: "Glue", desc: "Transforms data into Parquet format" },
+      { name: "Lambda", desc: "Aggregates revenue and metrics" }
+    ]
+  },
+  {
+    title: "AI Layer",
+    nodes: [
+      { name: "Bedrock", desc: "Generates AI-based insights" }
+    ]
+  },
+  {
+    title: "Serving Layer",
+    nodes: [
+      { name: "DynamoDB", desc: "Stores processed insights" },
+      { name: "API Gateway", desc: "Provides secure API access" }
+    ]
+  },
+  {
+    title: "Frontend Layer",
+    nodes: [
+      { name: "React", desc: "Displays dashboard & insights" }
+    ]
+  }
 ];
 
 function Architecture() {
@@ -18,92 +43,74 @@ function Architecture() {
     <div className="bg-black p-6 rounded-2xl border border-gray-800 shadow-xl">
 
       <h2 className="text-2xl mb-6 font-semibold">
-        ⚙️ Interactive System Architecture
+        ⚙️ System Design Architecture
       </h2>
 
-      {/* 🔥 CANVAS */}
-      <div className="overflow-auto cursor-grab">
-        <svg width="1300" height="300">
+      {/* 🔥 LAYERS */}
+      <div className="space-y-8">
 
-          {/* 🔥 CONNECTIONS */}
-          {nodes.slice(0, -1).map((node, i) => {
-            const next = nodes[i + 1];
+        {layers.map((layer, index) => (
+          <div key={index}>
 
-            const path = `
-              M ${node.x} ${node.y}
-              Q ${(node.x + next.x) / 2} ${node.y - 80}
-              ${next.x} ${next.y}
-            `;
+            {/* 🔹 Layer Title */}
+            <h3 className="text-lg text-blue-400 mb-3">
+              {layer.title}
+            </h3>
 
-            return (
-              <g key={i}>
+            {/* 🔹 Nodes */}
+            <div className="flex flex-wrap gap-6 items-center">
 
-                {/* LINE */}
-                <path
-                  d={path}
-                  stroke="#374151"
-                  strokeWidth="2"
-                  fill="transparent"
-                />
-
-                {/* 🔥 FLOW DOT */}
-                <motion.circle
-                  r="4"
-                  fill="#3b82f6"
-                >
-                  <animateMotion dur="2s" repeatCount="indefinite" path={path} />
-                </motion.circle>
-
-              </g>
-            );
-          })}
-
-          {/* 🔥 NODES */}
-          {nodes.map((node) => (
-            <g key={node.id}>
-
-              <foreignObject x={node.x - 50} y={node.y - 40} width="110" height="110">
+              {layer.nodes.map((node, i) => (
                 <motion.div
+                  key={i}
                   whileHover={{ scale: 1.1 }}
                   onClick={() => setSelected(node)}
-                  className="cursor-pointer bg-gray-800 border border-gray-700 rounded-xl p-4 text-center shadow-lg relative"
+                  className="cursor-pointer bg-gray-800 px-6 py-4 rounded-xl border border-gray-700 shadow-lg"
                 >
-                  <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg"></div>
-                  <p className="text-sm font-semibold">{node.name}</p>
+                  <p className="font-semibold">{node.name}</p>
                 </motion.div>
-              </foreignObject>
+              ))}
 
-            </g>
-          ))}
+            </div>
 
-        </svg>
+            {/* 🔥 FLOW LINE */}
+            {index !== layers.length - 1 && (
+              <div className="flex justify-center mt-4">
+
+                <motion.div
+                  className="w-1 h-10 bg-blue-500"
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                />
+
+              </div>
+            )}
+
+          </div>
+        ))}
+
       </div>
 
-      {/* 🔥 DETAILS PANEL */}
+      {/* 🔥 DETAIL PANEL */}
       {selected && (
-        <div className="mt-6 bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
+        <div className="mt-8 bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
           <h3 className="text-lg font-semibold">{selected.name}</h3>
           <p className="text-gray-400 mt-2">{selected.desc}</p>
 
           <button
             onClick={() => setSelected(null)}
-            className="mt-4 text-sm text-blue-400 hover:underline"
+            className="mt-4 text-blue-400 text-sm hover:underline"
           >
             Close
           </button>
         </div>
       )}
 
-      {/* 🔥 TECH STACK */}
-      <div className="mt-6 flex flex-wrap gap-2">
-        {["S3", "Glue", "Lambda", "Bedrock", "DynamoDB", "API Gateway", "React"].map((tech, i) => (
-          <span
-            key={i}
-            className="bg-gray-800 px-3 py-1 text-sm rounded-full border border-gray-700"
-          >
-            {tech}
-          </span>
-        ))}
+      {/* 🔥 SUMMARY */}
+      <div className="mt-8 text-gray-400 text-sm leading-relaxed">
+        This architecture demonstrates a layered AI data pipeline where raw data
+        flows through ETL processing, AI analysis, and is served via scalable APIs
+        to a frontend dashboard.
       </div>
 
     </div>
