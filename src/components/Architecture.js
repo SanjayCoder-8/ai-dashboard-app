@@ -15,10 +15,9 @@ const nodes = [
 
 function Architecture() {
   const [selected, setSelected] = useState(null);
-
-  // 🔥 ACTIVE STEP (simulation)
   const [activeStep, setActiveStep] = useState(0);
 
+  // 🔥 STEP FLOW SIMULATION
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % nodes.length);
@@ -26,26 +25,12 @@ function Architecture() {
     return () => clearInterval(interval);
   }, []);
 
-  // 🔊 FULL ARCHITECTURE VOICE
+  // 🔊 FULL VOICE
   const speakFull = () => {
     const speech = new SpeechSynthesisUtterance(`
-    This system follows an end-to-end data pipeline architecture for retail analytics and AI-driven insights.
-
-    Data is stored in Amazon S3 as raw retail transactions.
-
-    AWS Glue performs ETL operations to clean and transform the data into optimized formats.
-
-    AWS Lambda computes key business metrics like revenue, trends, and product performance.
-
-    Amazon Bedrock generates AI-driven business insights using large language models.
-
-    The results are stored in DynamoDB for fast and scalable access.
-
-    API Gateway securely exposes the data through REST APIs.
-
-    Finally, a React dashboard visualizes the data and insights for users.
+      This system follows an end-to-end data pipeline architecture.
+      Data flows from S3 to Glue to Lambda to Bedrock to DynamoDB to API and finally to React dashboard.
     `);
-
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(speech);
   };
@@ -59,10 +44,12 @@ function Architecture() {
   return (
     <div className="bg-black p-6 rounded-2xl border border-gray-800 overflow-hidden">
 
+      {/* TITLE */}
       <h2 className="text-2xl text-center mb-6 font-semibold">
         ⚙️ System Design
       </h2>
 
+      {/* VOICE */}
       <div className="flex justify-center mb-6">
         <button
           onClick={speakFull}
@@ -72,14 +59,14 @@ function Architecture() {
         </button>
       </div>
 
+      {/* ZOOM */}
       <TransformWrapper
         initialScale={1}
         minScale={0.8}
         maxScale={1.5}
-        centerOnInit={true}
+        centerOnInit
         doubleClick={{ disabled: true }}
         panning={{ velocityDisabled: true }}
-        wheel={{ step: 0.1 }}
       >
         <TransformComponent>
 
@@ -90,7 +77,7 @@ function Architecture() {
               {nodes.map((node, index) => (
                 <React.Fragment key={node.id}>
 
-                  {/* NODE */}
+                  {/* 🔥 NODE */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -107,6 +94,7 @@ function Architecture() {
                       ${activeStep === index ? "ring-4 ring-blue-400 shadow-[0_0_25px_#3b82f6] scale-105" : ""}`}
                     >
 
+                      {/* ICON */}
                       <div className={`w-12 h-12 mx-auto mb-2 flex items-center justify-center rounded-xl ${node.color}`}>
                         {node.name === "Lambda"
                           ? "λ"
@@ -119,27 +107,29 @@ function Architecture() {
                     </div>
                   </motion.div>
 
-                  {/* CONNECTOR WITH FLOW */}
-                  {index !== nodes.length - 1 && (<div className="relative w-20 h-1 bg-gray-700 rounded overflow-hidden">
+                  {/* 🔥 CONNECTOR (FIXED ANIMATION) */}
+                  {index !== nodes.length - 1 && (
+                    <div className="relative w-20 h-6 bg-gray-700 rounded overflow-hidden">
 
-  {/* BASE LINE */}
-  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
+                      {/* BASE LINE */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
 
-  {/* 🔥 STRONG FLOW ANIMATION */}
-  <motion.div
-  initial={{ x: -60 }}
-  animate={{ x: 160 }}
-  transition={{
-    repeat: Infinity,
-    duration: 1,
-    ease: "linear"
-  }}
-  className="absolute top-1/2 -translate-y-1/2 text-blue-400 text-xl font-bold drop-shadow-[0_0_10px_#3b82f6]"
->
-  ➤➤➤
-</motion.div>
+                      {/* 🔥 VISIBLE FLOW */}
+                      <motion.div
+                        initial={{ x: -60 }}
+                        animate={{ x: 160 }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 1,
+                          ease: "linear"
+                        }}
+                        className="absolute inset-y-0 flex items-center text-blue-400 text-xl font-bold drop-shadow-[0_0_10px_#3b82f6]"
+                      >
+                        ➤➤➤
+                      </motion.div>
 
-</div>)}
+                    </div>
+                  )}
 
                 </React.Fragment>
               ))}
@@ -151,7 +141,7 @@ function Architecture() {
         </TransformComponent>
       </TransformWrapper>
 
-      {/* DETAIL PANEL */}
+      {/* 🔥 DETAIL PANEL */}
       {selected && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
