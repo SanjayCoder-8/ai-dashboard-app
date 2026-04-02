@@ -109,33 +109,34 @@ function Architecture() {
 
                   {/* 🔥 CONNECTOR (FIXED ANIMATION) */}
                   {index !== nodes.length - 1 && (
-                    <div className="relative w-24 h-10 bg-gray-700 rounded overflow-hidden">
+                    <div className="relative w-24 h-8 bg-gray-700 rounded overflow-hidden">
 
-                      {/* BASE LINE */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
+  {/* BASE LINE */}
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
 
-                      {/* 🔥 VISIBLE FLOW */}
-                      <motion.div
-                        initial={{ x: -100 }}
-                        animate={{ x: 200 }}
-                        transition={{
-                          repeat: Infinity,
-                          duration: 2,
-                          ease: "easeInOut"
-                        }}
-                        style={{
-                          position: "absolute",
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          color: "#3b82f6",
-                          fontSize: "28px",
-                          fontWeight: "bold"
-                        }}
->
-                        ➤
-                      </motion.div>
+  {/* 🔥 FIXED ANIMATION */}
+  <motion.div
+    initial={{ x: -80 }}
+    animate={{ x: 200 }}
+    transition={{
+      repeat: Infinity,
+      duration: 2,
+      ease: "linear"
+    }}
+    style={{
+      position: "absolute",
+      top: "50%",
+      y: "-50%",
+      color: "#3b82f6",
+      fontSize: "24px",
+      fontWeight: "bold",
+      textShadow: "0 0 10px #3b82f6"
+    }}
+  >
+    ➤➤➤
+  </motion.div>
 
-                    </div>
+</div>
                   )}
 
                 </React.Fragment>
