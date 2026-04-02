@@ -1,152 +1,109 @@
-import React from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-/* -------------------- AWS-STYLE SVG ICONS -------------------- */
-const Icon = ({ type }) => {
-  const common = "w-10 h-10 mx-auto mb-2";
-
-  switch (type) {
-    case "s3":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#FF9900">
-          <rect x="3" y="4" width="18" height="6" rx="2"/>
-          <rect x="3" y="12" width="18" height="6" rx="2"/>
-        </svg>
-      );
-    case "glue":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#3b82f6">
-          <circle cx="6" cy="12" r="3"/>
-          <circle cx="18" cy="6" r="3"/>
-          <circle cx="18" cy="18" r="3"/>
-          <line x1="8" y1="12" x2="15" y2="6" stroke="#3b82f6" strokeWidth="2"/>
-          <line x1="8" y1="12" x2="15" y2="18" stroke="#3b82f6" strokeWidth="2"/>
-        </svg>
-      );
-    case "lambda":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#f59e0b">
-          <polygon points="4,20 10,4 14,4 20,20 16,20 12,10 8,20"/>
-        </svg>
-      );
-    case "bedrock":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#22c55e">
-          <rect x="4" y="4" width="16" height="16" rx="3"/>
-          <circle cx="9" cy="10" r="1.5"/>
-          <circle cx="15" cy="10" r="1.5"/>
-          <path d="M8 15c2 2 6 2 8 0" stroke="white" strokeWidth="1.5" fill="none"/>
-        </svg>
-      );
-    case "dynamo":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#6366f1">
-          <ellipse cx="12" cy="6" rx="6" ry="3"/>
-          <path d="M6 6v8c0 1.7 12 1.7 12 0V6" />
-          <ellipse cx="12" cy="14" rx="6" ry="3"/>
-        </svg>
-      );
-    case "api":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#06b6d4">
-          <rect x="3" y="6" width="18" height="12" rx="2"/>
-          <path d="M7 12h10" stroke="white" strokeWidth="2"/>
-        </svg>
-      );
-    case "react":
-      return (
-        <svg className={common} viewBox="0 0 24 24" fill="#61dafb">
-          <circle cx="12" cy="12" r="2"/>
-          <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="#61dafb"/>
-          <ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="#61dafb"/>
-        </svg>
-      );
-    default:
-      return null;
-  }
-};
-
-/* -------------------- FLOW DATA -------------------- */
-const flow = [
-  { name: "S3", type: "s3", desc: "Raw data storage (CSV)" },
-  { name: "Glue", type: "glue", desc: "ETL → Parquet + Partitioning" },
-  { name: "Lambda", type: "lambda", desc: "Aggregation + Metrics" },
-  { name: "Bedrock", type: "bedrock", desc: "AI Insights generation" },
-  { name: "DynamoDB", type: "dynamo", desc: "Stores analytics results" },
-  { name: "API", type: "api", desc: "Exposes REST endpoint" },
-  { name: "React", type: "react", desc: "Dashboard UI" },
+const nodes = [
+  { id: 1, name: "S3", x: 50, y: 150, desc: "Stores raw CSV data in bucket" },
+  { id: 2, name: "Glue", x: 220, y: 80, desc: "Transforms CSV → Parquet" },
+  { id: 3, name: "Lambda", x: 400, y: 150, desc: "Aggregates revenue & metrics" },
+  { id: 4, name: "Bedrock", x: 580, y: 80, desc: "Generates AI insights (LLM)" },
+  { id: 5, name: "DynamoDB", x: 760, y: 150, desc: "Stores processed insights" },
+  { id: 6, name: "API", x: 920, y: 80, desc: "Secure API endpoint" },
+  { id: 7, name: "React", x: 1100, y: 150, desc: "Frontend dashboard UI" }
 ];
 
 function Architecture() {
+  const [selected, setSelected] = useState(null);
+
   return (
-    <div className="space-y-10">
+    <div className="bg-black p-6 rounded-2xl border border-gray-800 shadow-xl">
 
-      {/* 🔥 FLOW DIAGRAM WITH ANIMATION */}
-      <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
-        <h2 className="text-2xl mb-6">⚙️ System Architecture</h2>
+      <h2 className="text-2xl mb-6 font-semibold">
+        ⚙️ Interactive System Architecture
+      </h2>
 
-        <div className="relative flex flex-wrap justify-center items-center gap-6">
+      {/* 🔥 CANVAS */}
+      <div className="overflow-auto cursor-grab">
+        <svg width="1300" height="300">
 
-          {flow.map((item, index) => (
-            <div key={index} className="relative group text-center">
+          {/* 🔥 CONNECTIONS */}
+          {nodes.slice(0, -1).map((node, i) => {
+            const next = nodes[i + 1];
 
-              {/* Card */}
-              <div className="bg-gray-900 p-4 rounded-xl shadow-md hover:scale-105 transition">
-                <Icon type={item.type} />
-                <h3 className="font-semibold">{item.name}</h3>
-              </div>
+            const path = `
+              M ${node.x} ${node.y}
+              Q ${(node.x + next.x) / 2} ${node.y - 80}
+              ${next.x} ${next.y}
+            `;
 
-              {/* Tooltip */}
-              <div className="absolute bottom-full mb-2 hidden group-hover:block bg-black text-white text-xs p-2 rounded">
-                {item.desc}
-              </div>
+            return (
+              <g key={i}>
 
-              {/* Animated Arrow */}
-              {index !== flow.length - 1 && (
-                <svg width="60" height="20" className="mx-auto mt-2">
-                  <line
-                    x1="0"
-                    y1="10"
-                    x2="60"
-                    y2="10"
-                    stroke="#3b82f6"
-                    strokeWidth="2"
-                    strokeDasharray="5,5"
-                    className="animate-pulse"
-                  />
-                </svg>
-              )}
-            </div>
+                {/* LINE */}
+                <path
+                  d={path}
+                  stroke="#374151"
+                  strokeWidth="2"
+                  fill="transparent"
+                />
+
+                {/* 🔥 FLOW DOT */}
+                <motion.circle
+                  r="4"
+                  fill="#3b82f6"
+                >
+                  <animateMotion dur="2s" repeatCount="indefinite" path={path} />
+                </motion.circle>
+
+              </g>
+            );
+          })}
+
+          {/* 🔥 NODES */}
+          {nodes.map((node) => (
+            <g key={node.id}>
+
+              <foreignObject x={node.x - 50} y={node.y - 40} width="110" height="110">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  onClick={() => setSelected(node)}
+                  className="cursor-pointer bg-gray-800 border border-gray-700 rounded-xl p-4 text-center shadow-lg relative"
+                >
+                  <div className="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg"></div>
+                  <p className="text-sm font-semibold">{node.name}</p>
+                </motion.div>
+              </foreignObject>
+
+            </g>
           ))}
 
-        </div>
+        </svg>
       </div>
 
-      {/* 💼 TECH STACK */}
-      <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
-        <h2 className="text-2xl mb-6">💼 Tech Stack Used</h2>
+      {/* 🔥 DETAILS PANEL */}
+      {selected && (
+        <div className="mt-6 bg-gray-900 p-5 rounded-xl border border-gray-700 shadow-lg">
+          <h3 className="text-lg font-semibold">{selected.name}</h3>
+          <p className="text-gray-400 mt-2">{selected.desc}</p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          {flow.map((item, i) => (
-            <div key={i} className="bg-gray-900 p-4 rounded-xl hover:scale-105 transition">
-              <Icon type={item.type} />
-              <p className="text-sm">{item.name}</p>
-            </div>
-          ))}
+          <button
+            onClick={() => setSelected(null)}
+            className="mt-4 text-sm text-blue-400 hover:underline"
+          >
+            Close
+          </button>
         </div>
-      </div>
+      )}
 
-      {/* 🧠 PROJECT EXPLANATION */}
-      <div className="bg-gray-800 p-6 rounded-2xl shadow-lg">
-        <h2 className="text-2xl mb-4">📖 Project Explanation</h2>
-
-        <p className="text-gray-300 leading-relaxed">
-          This project is an end-to-end AI-powered retail analytics platform built on AWS.
-          Raw sales data is stored in S3 and processed using AWS Glue into optimized formats.
-          AWS Lambda performs aggregations and computes key business metrics.
-          Amazon Bedrock generates intelligent insights using large language models.
-          The results are stored in DynamoDB and exposed via API Gateway.
-          Finally, a React dashboard visualizes the data and insights interactively for users.
-        </p>
+      {/* 🔥 TECH STACK */}
+      <div className="mt-6 flex flex-wrap gap-2">
+        {["S3", "Glue", "Lambda", "Bedrock", "DynamoDB", "API Gateway", "React"].map((tech, i) => (
+          <span
+            key={i}
+            className="bg-gray-800 px-3 py-1 text-sm rounded-full border border-gray-700"
+          >
+            {tech}
+          </span>
+        ))}
       </div>
 
     </div>
