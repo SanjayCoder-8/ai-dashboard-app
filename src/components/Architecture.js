@@ -104,7 +104,7 @@ function Architecture() {
                   >
                     <div
                       className={`bg-gray-900 px-5 py-6 rounded-2xl border border-gray-700 shadow-lg text-center w-28 transition
-                      ${activeStep === index ? "ring-2 ring-blue-500 shadow-blue-500/40" : ""}`}
+                      ${activeStep === index ? "ring-4 ring-blue-400 shadow-[0_0_25px_#3b82f6] scale-105" : ""}`}
                     >
 
                       <div className={`w-12 h-12 mx-auto mb-2 flex items-center justify-center rounded-xl ${node.color}`}>
@@ -120,25 +120,26 @@ function Architecture() {
                   </motion.div>
 
                   {/* CONNECTOR WITH FLOW */}
-                  {index !== nodes.length - 1 && (
-                    <div className="relative w-16 h-1 bg-gray-700 rounded overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-40"></div>
+                  {index !== nodes.length - 1 && (<div className="relative w-20 h-1 bg-gray-700 rounded overflow-hidden">
 
-                      {/* moving arrow */}
-                      <motion.div
-                        initial={{ x: -30 }}
-                        animate={{ x: 80 }}
-                        transition={{
-                          repeat: Infinity,
-                          duration: 1.5,
-                          ease: "linear"
-                        }}
-                        className="absolute top-1/2 -translate-y-1/2 text-blue-400 text-xs"
-                      >
-                        ➤
-                      </motion.div>
-                    </div>
-                  )}
+  {/* BASE LINE */}
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-30"></div>
+
+  {/* 🔥 STRONG FLOW ANIMATION */}
+  <motion.div
+    initial={{ x: -40 }}
+    animate={{ x: 120 }}
+    transition={{
+      repeat: Infinity,
+      duration: 1.2,
+      ease: "linear"
+    }}
+    className="absolute top-1/2 -translate-y-1/2 text-blue-400 text-lg font-bold drop-shadow-[0_0_6px_#3b82f6]"
+  >
+    ➤➤
+  </motion.div>
+
+</div>)}
 
                 </React.Fragment>
               ))}
