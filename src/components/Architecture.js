@@ -127,17 +127,17 @@ function Architecture() {
 
   {/* 🔥 STRONG FLOW ANIMATION */}
   <motion.div
-    initial={{ x: -40 }}
-    animate={{ x: 120 }}
-    transition={{
-      repeat: Infinity,
-      duration: 1.2,
-      ease: "linear"
-    }}
-    className="absolute top-1/2 -translate-y-1/2 text-blue-400 text-lg font-bold drop-shadow-[0_0_6px_#3b82f6]"
-  >
-    ➤➤
-  </motion.div>
+  initial={{ x: -60 }}
+  animate={{ x: 160 }}
+  transition={{
+    repeat: Infinity,
+    duration: 1,
+    ease: "linear"
+  }}
+  className="absolute top-1/2 -translate-y-1/2 text-blue-400 text-xl font-bold drop-shadow-[0_0_10px_#3b82f6]"
+>
+  ➤➤➤
+</motion.div>
 
 </div>)}
 
